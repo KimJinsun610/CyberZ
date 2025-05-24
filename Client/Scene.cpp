@@ -789,9 +789,6 @@ void CScene::RenderBoundingBox(ID3D12GraphicsCommandList* pd3dCommandList, CCame
 
 bool CScene::CheckObjByObjCollition(CGameObject* pBase, CGameObject* pTarget, XMFLOAT3& out)
 {
-	//BoundingOrientedBox xmBoundingBox = pBase->m_xmBoundingBox;
-	//XMFLOAT3 zero(1, 1, 1);
-	//pBase->m_xmBoundingBox.Transform(xmBoundingBox, 1.f, XMLoadFloat3(&zero), XMLoadFloat3(&target));
 	if (pBase->m_xmBoundingBox.Intersects(pTarget->m_xmBoundingBox)) {
 		XMFLOAT3 corner[8];
 		pTarget->m_xmBoundingBox.GetCorners(corner);

@@ -40,8 +40,6 @@ public:
 	IWICImagingFactory* m_pwicImagingFactory = NULL;
 
 	ID2D1Effect* m_pd2dfxBitmapSource = NULL;
-	//ID2D1Effect* m_pd2dfxGaussianBlur = NULL;
-	//ID2D1Effect* m_pd2dfxEdgeDetection = NULL;
 	
 	ID2D1DrawingStateBlock1* m_pd2dsbDrawingState = NULL;
 	IWICFormatConverter* m_pwicFormatConverter = NULL;
