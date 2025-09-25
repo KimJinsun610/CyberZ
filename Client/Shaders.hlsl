@@ -459,8 +459,11 @@ struct PS_DEPTH_OUTPUT
 PS_DEPTH_OUTPUT PSDepthWriteShader(VS_STANDARD_OUTPUT input)
 {
     PS_DEPTH_OUTPUT output;
+    
+    float fNormalizedDepth = input.position.z / input.position.w;
+    
+    output.fzPosition = fNormalizedDepth;
 
-    output.fzPosition = input.position.z;
     output.fDepth = input.position.z;
 
     return (output);
