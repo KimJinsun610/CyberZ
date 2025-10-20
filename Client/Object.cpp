@@ -861,6 +861,8 @@ void CGameObject::LoadMaterialsFromFile(ID3D12Device* pd3dDevice, ID3D12Graphics
 
 CGameObject* CGameObject::LoadFrameHierarchyFromFile(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandList* pd3dCommandList, ID3D12RootSignature* pd3dGraphicsRootSignature, CGameObject* pParent, FILE* pInFile, CShader* pShader, int* pnSkinnedMeshes)
 {
+	// 기존 코드
+	
 	char pstrToken[64] = { '\0' };
 	UINT nReads = 0;
 
@@ -949,6 +951,8 @@ CGameObject* CGameObject::LoadFrameHierarchyFromFile(ID3D12Device* pd3dDevice, I
 		}
 	}
 	return(pGameObject);
+	
+
 }
 
 void CGameObject::PrintFrameInfo(CGameObject* pGameObject, CGameObject* pParent)

@@ -129,18 +129,33 @@ void CScene::CreateShadowShader(ID3D12Device* pd3dDevice, ID3D12GraphicsCommandL
 
 void CScene::ReleaseObjects()
 {
+	//UI
 	if (m_pUI)
 	{
 		m_pUI->Release();
 		delete m_pUI;
 	}
 
-	if (m_pd3dGraphicsRootSignature) m_pd3dGraphicsRootSignature->Release();
-	if (m_pd3dCbvSrvDescriptorHeap) m_pd3dCbvSrvDescriptorHeap->Release();
+	// 셰이더 
+	if (m_ppShaders)
+	{
+		for (int i = 0; i < m_nShaders; i++)
+		{
+			m_ppShaders[i]->ReleaseShaderVariables();
+			m_ppShaders[i]->ReleaseObjects();			// 내부 객체
+			m_ppShaders[i]->Release();					// Scene 객체
+		}
+		delete[] m_ppShaders;
+	}
+	if (m_pDepthRenderShader)
+	{
+		m_pDepthRenderShader->ReleaseShaderVariables();
+		m_pDepthRenderShader->ReleaseObjects();
+		m_pDepthRenderShader->Release();
+	}
 
-	//if (m_ppModelInfoPlayer)delete[] m_ppModelInfoPlayer;
 
-
+	// 오브젝트 해제 (Upload 버퍼 포함)
 	if (m_ppPlayer) {
 		for (int i = 0; i < m_nPlayer; ++i) {
 			m_ppPlayer[i]->Release();
@@ -148,21 +163,6 @@ void CScene::ReleaseObjects()
 		delete[] m_ppPlayer;
 
 	}
-
-	if (m_ppShaders)
-	{
-		for (int i = 0; i < m_nShaders; i++)
-		{
-			m_ppShaders[i]->ReleaseShaderVariables();
-			m_ppShaders[i]->ReleaseObjects();
-			m_ppShaders[i]->Release();
-		}
-		delete[] m_ppShaders;
-	}
-
-	if (m_pTerrain) delete m_pTerrain;
-	if (m_pSkyBox) delete m_pSkyBox;
-
 
 	if (m_ppMissionObj)
 	{
@@ -178,8 +178,7 @@ void CScene::ReleaseObjects()
 	{
 		for (int i = 0; i < m_nHierarchicalGameObjects; i++) if (m_ppHierarchicalGameObjects[i])
 		{
-			m_ppHierarchicalGameObjects[i]->ReleaseUploadBuffers();
-			m_ppHierarchicalGameObjects[i]->Release();
+			m_ppHierarchicalGameObjects[i]->Release();					// 객체
 		}
 		delete[] m_ppHierarchicalGameObjects;
 	}
@@ -194,16 +193,17 @@ void CScene::ReleaseObjects()
 		m_pBoss->Release();
 	}
 
-	if (m_pDepthRenderShader)
-	{
-		m_pDepthRenderShader->ReleaseShaderVariables();
-		m_pDepthRenderShader->ReleaseObjects();
-		m_pDepthRenderShader->Release();
-	}
+	// 지형&스카이박스
+	if (m_pTerrain) delete m_pTerrain;
+	if (m_pSkyBox) delete m_pSkyBox;
 
+	// 조명
 	ReleaseShaderVariables();
-
 	if (m_pLights) delete[] m_pLights;
+
+	// DirectX 리소스
+	if (m_pd3dGraphicsRootSignature) m_pd3dGraphicsRootSignature->Release();
+	if (m_pd3dCbvSrvDescriptorHeap) m_pd3dCbvSrvDescriptorHeap->Release();
 
 }
 
@@ -834,6 +834,96 @@ bool CScene::CheckObjByObjCollition(CGameObject* pBase, CGameObject* pTarget, XM
 
 	else return false;
 }
+
+// 포폴용 추가부 (충돌처리)
+/*
+//----------------------------------------------------------------
+namespace Vector3 {
+	inline bool IsZero(const XMFLOAT3& v) noexcept {
+		constexpr float eps = 1e-6f;
+		return (std::fabs(v.x) < eps && std::fabs(v.y) < eps && std::fabs(v.z) < eps);
+	}
+
+	inline XMFLOAT3 Normalize(const XMFLOAT3& v) noexcept {
+		XMVECTOR vec = XMLoadFloat3(&v);
+		vec = XMVector3Normalize(vec);
+		XMFLOAT3 result;
+		XMStoreFloat3(&result, vec);
+		return result;
+	}
+
+	inline XMFLOAT3 ToFloat3(FXMVECTOR v) noexcept {
+		XMFLOAT3 out;
+		XMStoreFloat3(&out, v);
+		return out;
+	}
+}
+
+
+static bool CheckFaceIntersection(const BoundingOrientedBox& base,
+	const std::array<XMVECTOR, 8>& corners,
+	std::array<int, 3> indices,
+	XMFLOAT3& out)
+{
+	const auto& [i1, i2, i3] = indices;
+
+	if (base.Intersects(corners[i1], corners[i2], corners[i3])) {
+		const XMVECTOR edge1 = corners[i2] - corners[i1];
+		const XMVECTOR edge2 = corners[i3] - corners[i1];
+		const XMVECTOR normalVec = XMVector3Cross(edge1, edge2);
+
+		XMFLOAT3 normal = Vector3::Normalize(Vector3::ToFloat3(normalVec));
+
+		if (Vector3::IsZero(out) || std::fabs(normal.x - out.x) < 1e-5f)
+			out = normal;
+
+		return true;
+	}
+	return false;
+}
+
+bool CScene::CheckObjByObjCollition(CGameObject* pBase, CGameObject* pTarget, XMFLOAT3& out)
+{
+	if (!pBase || !pTarget)
+		return false;
+
+	if (pBase->m_xmBoundingBox.Intersects(pTarget->m_xmBoundingBox)) {
+
+		// 코너 추출
+		std::array<XMFLOAT3, 8> cornerPoints{};
+		pTarget->m_xmBoundingBox.GetCorners(cornerPoints.data());
+
+		std::array<XMVECTOR, 8> corners{};
+		for (size_t i = 0; i < corners.size(); ++i)
+			corners[i] = XMLoadFloat3(&cornerPoints[i]);
+
+		// 각 면(삼각형 2개씩) 인덱스 정의
+		constexpr std::array<std::array<int, 3>, 8> faces = { {
+			{0, 1, 2}, {0, 2, 3},
+			{4, 0, 3}, {4, 3, 7},
+			{5, 4, 7}, {5, 7, 6},
+			{1, 5, 6}, {1, 6, 2}
+		} };
+
+		for (const auto& face : faces) {
+			// 닿은면 법선백터 연산
+			if (CheckFaceIntersection(pBase->m_xmBoundingBox, corners, face, out))
+				return true;
+		}
+
+		return true;
+	}
+
+	if (pTarget->m_pChild && CheckObjByObjCollition(pBase, pTarget->m_pChild, out))
+		return true;
+
+	if (pTarget->m_pSibling && CheckObjByObjCollition(pBase, pTarget->m_pSibling, out))
+		return true;
+
+	return false;
+}
+*/
+
 
 bool CScene::CheckMissionBound(CGameObject* pBase, CMissonOBJ* pTarget)
 {

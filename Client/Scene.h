@@ -36,6 +36,7 @@ struct LIGHTS
 
 class CScene
 {
+
 public:
     CScene();
     ~CScene();
@@ -127,7 +128,9 @@ public:
 	static D3D12_GPU_DESCRIPTOR_HANDLE GetGPUSrvDescriptorNextHandle() { return(m_d3dSrvGPUDescriptorNextHandle); }
 
 	float								m_fElapsedTime = 0.0f;
+	XMFLOAT3							m_xmf3RotatePosition = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
+public:
 	int									m_nHierarchicalGameObjects = 0;
 	CGameObject**						m_ppHierarchicalGameObjects = NULL;
 
@@ -138,8 +141,6 @@ public:
 	CGameObject**						m_ppEnemy = NULL;
 
 	CGameObject*						m_pBoss = NULL;
-
-	XMFLOAT3							m_xmf3RotatePosition = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
 	int									m_nShaders = 0;
 	CShader**							m_ppShaders = NULL;
