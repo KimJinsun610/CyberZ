@@ -80,10 +80,9 @@ public:
 	float	height = 0.f;
 	float	gab = 0.f;
 
-	void DrawUI(UINT m_nSwapChainBufferIndex);
-	void UISet(UINT m_nSwapChainBufferIndex);
 
-	
+	void DrawUI(UINT m_nSwapChainBufferIndex);
+	void RenderUIElements(UINT m_nSwapChainBufferIndex);
 
 	std::wstring m_text[3];
 
@@ -114,7 +113,7 @@ public:
 
 public:
 	void DrawUI(UINT m_nSwapChainBufferIndex);
-	void UISet(UINT m_nSwapChainBufferIndex);
+	void RenderUIElements(UINT m_nSwapChainBufferIndex);
 
 };
 
@@ -176,7 +175,7 @@ public:
 
 public:
 	void DrawUI(UINT m_nSwapChainBufferIndex);
-	void UISet(UINT m_nSwapChainBufferIndex);
+	void RenderUIElements(UINT m_nSwapChainBufferIndex);
 
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -218,6 +217,6 @@ public:
 
 public:
 	void DrawUI(UINT m_nSwapChainBufferIndex);
-	void UISet(UINT m_nSwapChainBufferIndex);
+	void RenderUIElements(UINT m_nSwapChainBufferIndex);
 
 };

@@ -217,14 +217,14 @@ void CPrepareRoomSceneUI::DrawUI(UINT m_nSwapChainBufferIndex)
 	m_pd2dDeviceContext->SetTransform(D2D1::Matrix3x2F::Identity());
 
 	//Direct2D Drawing
-	UISet(m_nSwapChainBufferIndex);
+	RenderUIElements(m_nSwapChainBufferIndex);
 
 	m_pd2dDeviceContext->EndDraw();
 	m_pd3d11On12Device->ReleaseWrappedResources(ppd3dResources, _countof(ppd3dResources));
 	m_pd3d11DeviceContext->Flush();
 }
 
-void CPrepareRoomSceneUI::UISet(UINT m_nSwapChainBufferIndex)
+void CPrepareRoomSceneUI::RenderUIElements(UINT m_nSwapChainBufferIndex)
 {
 	D2D1_SIZE_F szRenderTarget = m_ppd2dRenderTargets[m_nSwapChainBufferIndex]->GetSize();
 
@@ -322,7 +322,7 @@ void CFirstRoundSceneUI::DrawUI(UINT m_nSwapChainBufferIndex)
 	m_pd2dDeviceContext->SetTransform(D2D1::Matrix3x2F::Identity());
 
 	//Direct2D Drawing
-	UISet(m_nSwapChainBufferIndex);
+	RenderUIElements(m_nSwapChainBufferIndex);
 
 	m_pd2dDeviceContext->EndDraw();
 	m_pd3d11On12Device->ReleaseWrappedResources(ppd3dResources, _countof(ppd3dResources));
@@ -330,7 +330,7 @@ void CFirstRoundSceneUI::DrawUI(UINT m_nSwapChainBufferIndex)
 
 }
 
-void CFirstRoundSceneUI::UISet(UINT m_nSwapChainBufferIndex)
+void CFirstRoundSceneUI::RenderUIElements(UINT m_nSwapChainBufferIndex)
 {
 	D2D1_SIZE_F szRenderTarget = m_ppd2dRenderTargets[m_nSwapChainBufferIndex]->GetSize();
 
@@ -505,14 +505,14 @@ void CSecondRoundSceneUI::DrawUI(UINT m_nSwapChainBufferIndex)
 	m_pd2dDeviceContext->SetTransform(D2D1::Matrix3x2F::Identity());
 
 	//Direct2D Drawing
-	UISet(m_nSwapChainBufferIndex);
+	RenderUIElements(m_nSwapChainBufferIndex);
 
 	m_pd2dDeviceContext->EndDraw();
 	m_pd3d11On12Device->ReleaseWrappedResources(ppd3dResources, _countof(ppd3dResources));
 	m_pd3d11DeviceContext->Flush();
 }
 
-void CSecondRoundSceneUI::UISet(UINT m_nSwapChainBufferIndex)
+void CSecondRoundSceneUI::RenderUIElements(UINT m_nSwapChainBufferIndex)
 {
 	D2D1_SIZE_F szRenderTarget = m_ppd2dRenderTargets[m_nSwapChainBufferIndex]->GetSize();
 
@@ -1035,14 +1035,14 @@ void CLoadingUI::DrawUI(UINT m_nSwapChainBufferIndex)
 	m_pd2dDeviceContext->SetTransform(D2D1::Matrix3x2F::Identity());
 
 	//Direct2D Drawing
-	UISet(m_nSwapChainBufferIndex);
+	RenderUIElements(m_nSwapChainBufferIndex);
 
 	m_pd2dDeviceContext->EndDraw();
 	m_pd3d11On12Device->ReleaseWrappedResources(ppd3dResources, _countof(ppd3dResources));
 	m_pd3d11DeviceContext->Flush();
 }
 
-void CLoadingUI::UISet(UINT m_nSwapChainBufferIndex)
+void CLoadingUI::RenderUIElements(UINT m_nSwapChainBufferIndex)
 {
 	D2D1_SIZE_F szRenderTarget = m_ppd2dRenderTargets[m_nSwapChainBufferIndex]->GetSize();
 
