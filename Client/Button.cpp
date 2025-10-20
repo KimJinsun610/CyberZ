@@ -97,7 +97,7 @@ bool CButton::CheckChlick(HWND hWnd, POINT CursorPos)
 	mousePos.y = CursorPos.y - WindowRect.top;
 
 #else
-
+	// ÁÂÇ¥ º¯È¯
 	mousePos.x = CursorPos.x - WindowRect.left;
 	mousePos.y = CursorPos.y - WindowRect.top - 30;
 

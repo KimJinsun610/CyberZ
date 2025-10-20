@@ -61,14 +61,14 @@
     <Filter Include="09. Scene\09-02. LoadingScene">
       <UniqueIdentifier>{6df48786-8da1-4996-9652-aae7ef4ebfba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="11. GUI\11-01. UIAssets">
-      <UniqueIdentifier>{d6476df1-171d-4b99-9664-9abc847c1f80}</UniqueIdentifier>
-    </Filter>
     <Filter Include="11. GUI\11-02. UIobj">
       <UniqueIdentifier>{694f5bac-4b33-4148-9ff6-0d5731f2a32f}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameFramework\03. Network">
       <UniqueIdentifier>{90e808db-1448-471e-b839-9c7d76e62aca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="11. GUI\11-01. UIComponent">
+      <UniqueIdentifier>{d6476df1-171d-4b99-9664-9abc847c1f80}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -152,16 +152,16 @@
       <Filter>09. Scene\09-00. PlayScene</Filter>
     </ClCompile>
     <ClCompile Include="Button.cpp">
-      <Filter>11. GUI\11-01. UIAssets</Filter>
+      <Filter>11. GUI\11-01. UIComponent</Filter>
     </ClCompile>
     <ClCompile Include="TextInput.cpp">
-      <Filter>11. GUI\11-01. UIAssets</Filter>
+      <Filter>11. GUI\11-01. UIComponent</Filter>
     </ClCompile>
     <ClCompile Include="TagButton.cpp">
-      <Filter>11. GUI\11-01. UIAssets</Filter>
+      <Filter>11. GUI\11-01. UIComponent</Filter>
     </ClCompile>
     <ClCompile Include="ProgressBar.cpp">
-      <Filter>11. GUI\11-01. UIAssets</Filter>
+      <Filter>11. GUI\11-01. UIComponent</Filter>
     </ClCompile>
     <ClCompile Include="Machine.cpp">
       <Filter>11. GUI\11-02. UIobj</Filter>
@@ -247,16 +247,16 @@
       <Filter>09. Scene\09-00. PlayScene</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">
-      <Filter>11. GUI\11-01. UIAssets</Filter>
+      <Filter>11. GUI\11-01. UIComponent</Filter>
     </ClInclude>
     <ClInclude Include="TextInput.h">
-      <Filter>11. GUI\11-01. UIAssets</Filter>
+      <Filter>11. GUI\11-01. UIComponent</Filter>
     </ClInclude>
     <ClInclude Include="TagButton.h">
-      <Filter>11. GUI\11-01. UIAssets</Filter>
+      <Filter>11. GUI\11-01. UIComponent</Filter>
     </ClInclude>
     <ClInclude Include="ProgressBar.h">
-      <Filter>11. GUI\11-01. UIAssets</Filter>
+      <Filter>11. GUI\11-01. UIComponent</Filter>
     </ClInclude>
     <ClInclude Include="Machine.h">
       <Filter>11. GUI\11-02. UIobj</Filter>
